@@ -1,22 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { PingService } from '../../../services';
 import { NavbarComponent } from '../../layout/navbar/navbar.component';
 import { ServiceDiscoveryComponent } from '../service-discovery';
-
-declare const monaco: any;
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit, AfterViewInit {
+export class SettingsComponent implements OnInit {
   @Output() toggle: EventEmitter<any> = new EventEmitter();
   @Input() navbarComponent: NavbarComponent;
   @ViewChild(ServiceDiscoveryComponent) serviceDiscoveryModal: ServiceDiscoveryComponent;
-
-  @ViewChild('editor') editorContent: ElementRef;
   protocol = 'http'; // default protocol
   host;
   servicePort;
@@ -36,40 +32,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     // get last selected time interval
     this.pingInterval = localStorage.getItem('PING_INTERVAL');
     this.refreshInterval = localStorage.getItem('DASHBOARD_GRAPH_REFRESH_INTERVAL');
-  }
-
-  ngAfterViewInit() {
-    const onGotAmdLoader = () => {
-      // Load monaco
-      (<any>window).require(['vs/editor/editor.main'], () => {
-        this.initMonaco();
-      });
-    };
-
-    // Load AMD loader if necessary
-    if (!(<any>window).require) {
-      const loaderScript = document.createElement('script');
-      loaderScript.type ='text/javascript';
-      loaderScript.src = 'vs/loader.js';
-      loaderScript.addEventListener('load', onGotAmdLoader);
-      document.body.appendChild(loaderScript);
-    } else {
-      onGotAmdLoader();
-    }
-  }
-
-  // Will be called once monaco library is available
-  initMonaco() {
-    const myDiv: HTMLDivElement = this.editorContent.nativeElement;
-    const editor = monaco.editor.create(myDiv, {
-      value: [
-        "function x() {",
-        "\tconsole.log('Hello world!');",
-        "}"
-      ].join("\n"),
-      language: 'javascript',
-      theme: 'vs-dark'
-    });
   }
 
   public testServiceConnection(): void {

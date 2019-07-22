@@ -49,11 +49,17 @@
                       [jsonValue]="setConfigValue(configItem.value)">{{configItem?.value?.value != undefined ? configItem?.value?.value : configItem?.value?.default}}</textarea>
 
                     <div *ngIf="getConfigAttributeType(configItem.value.type) === 'SCRIPT'">
-                      <textarea rows="3" class="textarea is-fullwidth is-small" name="{{configItem.value.key}}"
+                      <div>
+                        <div id='editor' #editor class="monaco-editor" style="width: 100%; height: 250px">
+                        </div>
+                      </div>
+
+                      <!-- <textarea id='editor' #editor class="monaco-editor"  rows="3"
+                        class="textarea is-fullwidth is-small" name="{{configItem.value.key}}"
                         [ngModel]="fileContent || setConfigValue(configItem.value)"
-                        [value]='fileContent || setConfigValue(configItem.value)' disabled>
+                        [value]='fileContent || setConfigValue(configItem.value)'>
                         {{configItem?.value?.value != undefined ? configItem?.value?.value : configItem?.value?.default}}
-                      </textarea>
+                      </textarea> -->
                       <p class="help">
                         {{fileName != '' ? fileName : configItem?.value?.file | slice:configItem?.value?.file?.lastIndexOf('/')+1}}
                       </p>

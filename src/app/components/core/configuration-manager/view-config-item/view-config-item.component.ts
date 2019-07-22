@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,
+  ViewChild, ElementRef, AfterViewInit
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { differenceWith, sortBy, isEqual, isEmpty, cloneDeep, has } from 'lodash';
 
 import { AlertService, ConfigurationService, ProgressBarService } from '../../../../services';
 import ConfigTypeValidation from '../configuration-type-validation';
 
+
+declare const monaco: any;
+
 @Component({
   selector: 'app-view-config-item',
   templateUrl: './view-config-item.component.html',
   styleUrls: ['./view-config-item.component.css']
 })
-export class ViewConfigItemComponent implements OnInit, OnChanges {
+export class ViewConfigItemComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() categoryConfigurationData: any;
   @Input() useProxy = 'false';
   @Input() useFilterProxy = 'false';
@@ -19,6 +25,8 @@ export class ViewConfigItemComponent implements OnInit, OnChanges {
   @Input() formId = '';
   @Input() pageId = 'page';
   @Output() onConfigChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('editor') editorContent: ElementRef;
 
   public categoryConfiguration;
   public configItems = [];
@@ -29,6 +37,7 @@ export class ViewConfigItemComponent implements OnInit, OnChanges {
   public fileContent = '';
   public fileName = '';
 
+  @ViewChild('scriptDiv') scriptDiv: ElementRef;
   constructor(private configService: ConfigurationService,
     private alertService: AlertService,
     public ngProgress: ProgressBarService
@@ -78,6 +87,46 @@ export class ViewConfigItemComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  ngAfterViewInit() {
+    const onGotAmdLoader = () => {
+      // Load monaco
+      (<any>window).require(['vs/editor/editor.main'], () => {
+        this.initMonaco();
+      });
+    };
+
+    // Load AMD loader if necessary
+    if (!(<any>window).require) {
+      const loaderScript = document.createElement('script');
+      loaderScript.type = 'text/javascript';
+      loaderScript.src = 'vs/loader.js';
+      loaderScript.addEventListener('load', onGotAmdLoader);
+      document.body.appendChild(loaderScript);
+    } else {
+      onGotAmdLoader();
+    }
+  }
+
+  // Will be called once monaco library is available
+  initMonaco() {
+    const fileContent = this.configItems.map(item => {
+      if (item.key === 'script') {
+        return item.value;
+      }
+    });
+    if (this.editorContent !== undefined) {
+      const myDiv: HTMLDivElement = this.editorContent.nativeElement;
+      const editor = monaco.editor.create(myDiv, {
+        value: [
+          fileContent
+        ].join('\n'),
+        language: 'python',
+        theme: 'vs-dark'
+      });
+    }
+
   }
 
   public saveConfiguration(form: NgForm) {
@@ -215,6 +264,9 @@ export class ViewConfigItemComponent implements OnInit, OnChanges {
    * @param configVal Config value to pass in ngModel
    */
   public setConfigValue(configVal) {
+    if (this.scriptDiv !== undefined) {
+      this.scriptDiv.nativeElement.click();
+    }
     if (configVal.value !== undefined) {
       return configVal.value;
     } else {
