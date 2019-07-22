@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "prestart": "bash git-version",
-    "start": "ng serve",
+    "start": "ng serve --extra-webpack-config webpack.partial.js -o",
     "prebuild": "bash git-version",
     "build": "ng build --prod --build-optimizer --vendor-chunk=true",
     "test": "ng test",
@@ -39,7 +39,9 @@
     "plotly.js": "^1.48.1",
     "rxjs": "~6.5.2",
     "rxjs-compat": "~6.5.2",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "monaco-editor": "^0.15.6",
+    "ngx-build-plus": "^7.5.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^7.5.2",
@@ -74,6 +76,7 @@
     "ts-node": "~7.0.1",
     "tslint": "~5.12.1",
     "typescript": "~3.2.4",
-    "webpack": "^4.29.3"
+    "webpack": "^4.29.3",
+    "copy-webpack-plugin": "^4.6.0"
   }
 }
