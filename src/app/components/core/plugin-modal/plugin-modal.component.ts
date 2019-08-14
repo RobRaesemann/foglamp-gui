@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angu
 import { isEmpty } from 'lodash';
 
 import { ServicesApiService, AlertService, ProgressBarService } from '../../../services';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-plugin-modal',
@@ -10,16 +11,17 @@ import { ServicesApiService, AlertService, ProgressBarService } from '../../../s
 })
 export class PluginModalComponent implements OnInit, OnChanges {
 
+  pluginForm: FormGroup;
   plugins = [];
-  config = {
-    search: true,
-    height: '200px',
-    placeholder: 'Select',
-    limitTo: this.plugins.length,
-    moreText: 'more', // text to be displayed when more than one items are selected like Option 1 + 5 more
-    noResultsFound: 'No plugin found!',
-    searchPlaceholder: 'Search',
-  };
+  // config = {
+  //   search: true,
+  //   height: '200px',
+  //   placeholder: 'Select',
+  //   limitTo: this.plugins.length,
+  //   moreText: 'more', // text to be displayed when more than one items are selected like Option 1 + 5 more
+  //   noResultsFound: 'No plugin found!',
+  //   searchPlaceholder: 'Search',
+  // };
 
   installButtonEnabled = true;
 
@@ -31,9 +33,14 @@ export class PluginModalComponent implements OnInit, OnChanges {
 
   constructor(private service: ServicesApiService,
     private alertService: AlertService,
+    private fb: FormBuilder,
     private ngProgress: ProgressBarService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.pluginForm = this.fb.group({
+      pluginName: ''
+  });
+  }
 
   ngOnChanges() {
     if (this.data.modalState === true) {
@@ -58,29 +65,29 @@ export class PluginModalComponent implements OnInit, OnChanges {
     }
   }
 
-  fetchPluginRequestStarted() {
-    this.ngProgress.start();
-    const requestInProgressEle: HTMLElement = document.getElementById('requestInProgress') as HTMLElement;
-    requestInProgressEle.innerHTML = 'fetching available plugins ...';
-  }
+  // fetchPluginRequestStarted() {
+  //   this.ngProgress.start();
+  //   const requestInProgressEle: HTMLElement = document.getElementById('requestInProgress') as HTMLElement;
+  //   requestInProgressEle.innerHTML = 'fetching available plugins ...';
+  // }
 
-  fetchPluginRequestDone() {
-    this.ngProgress.done();
-    if (this.plugins.length) {
-      const ddnEle: HTMLElement = document.getElementsByClassName('ngx-dropdown-button')[0] as HTMLElement;
-      if (ddnEle !== undefined) {
-        ddnEle.click();
-      }
-    }
+  // fetchPluginRequestDone() {
+  //   this.ngProgress.done();
+  //   if (this.plugins.length) {
+  //     const ddnEle: HTMLElement = document.getElementsByClassName('ngx-dropdown-button')[0] as HTMLElement;
+  //     if (ddnEle !== undefined) {
+  //       ddnEle.click();
+  //     }
+  //   }
 
-    const requestInProgressEle: HTMLElement = document.getElementById('requestInProgress') as HTMLElement;
-    if (requestInProgressEle !== null) {
-      requestInProgressEle.innerHTML = '';
-    }
-  }
+  //   const requestInProgressEle: HTMLElement = document.getElementById('requestInProgress') as HTMLElement;
+  //   if (requestInProgressEle !== null) {
+  //     requestInProgressEle.innerHTML = '';
+  //   }
+  // }
 
   getAvailablePlugins(type: string) {
-    this.fetchPluginRequestStarted();
+    // this.fetchPluginRequestStarted();
     this.service.getAvailablePlugins(type).
       subscribe(
         (data: any) => {
@@ -90,11 +97,11 @@ export class PluginModalComponent implements OnInit, OnChanges {
             this.alertService.warning('No plugin available to install');
           }
           setTimeout(() => {
-            this.fetchPluginRequestDone();
+           // this.fetchPluginRequestDone();
           }, 100);
         },
         error => {
-          this.fetchPluginRequestDone();
+          // this.fetchPluginRequestDone();
           if (error.status === 0) {
             console.log('service down ', error);
           } else if (error.status === 404) {
@@ -111,6 +118,8 @@ export class PluginModalComponent implements OnInit, OnChanges {
   }
 
   installPlugin(pluginName: string) {
+    console.log('plugin name', pluginName);
+
     this.installButtonEnabled = false;
     if (pluginName === undefined) {
       this.installButtonEnabled = true;

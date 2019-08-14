@@ -7,36 +7,44 @@
     </header>
     <section class="modal-card-body">
       <ng-container>
-        <div class="columns">
-          <div class="column">
-            <div class="field is-horizontal">
+        <form [formGroup]="pluginForm">
+          <div class="columns">
+            <div class="column">
+              <!-- <div class="field is-horizontal">
               <div class="field-body">
-                <div class="field">
-                  <ngx-select-dropdown #plugin [config]="config" [options]="plugins" [disabled]="!plugins.length"></ngx-select-dropdown>
-                </div>
+                <div class="field"> -->
+              <ng-select #plugin [items]="plugins" [disabled]="!plugins.length" placeholder="Select plugin"
+                [loading]="!plugins.length"
+                appendTo="body"
+                [isOpen]='plugins.length'
+                loadingText="fetching available plugins ..."
+                [virtualScroll]="true" formControlName="pluginName">
+              </ng-select>
+              <!-- </div>
               </div>
+            </div> -->
             </div>
           </div>
-        </div>
-        <div class="columns">
+          <!-- <div class="columns">
           <div class="column">
             <p id="requestInProgress" class="help has-text-centered">fetching available plugins ...</p>
           </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <div class="field is-grouped is-pulled-right">
-              <p class="control">
-                <button class="button is-small" (click)="toggleModal(false)">Cancel</button>
-              </p>
-              <p class="control">
-                <button class="button is-small is-link" (click)="installPlugin(plugin.value)" [disabled]="!installButtonEnabled">Install</button>
-              </p>
+        </div> -->
+          <div class="columns">
+            <div class="column">
+              <div class="field is-grouped is-pulled-right">
+                <p class="control">
+                  <button class="button is-small" (click)="toggleModal(false)">Cancel</button>
+                </p>
+                <p class="control">
+                  <button class="button is-small is-link" (click)="installPlugin(plugin.value)"
+                    [disabled]="!installButtonEnabled">Install</button>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </ng-container>
-
     </section>
   </div>
 </div>

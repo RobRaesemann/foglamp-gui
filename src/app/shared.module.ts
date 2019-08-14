@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import {
   ViewConfigItemComponent,
@@ -16,7 +16,7 @@ import { PluginModalComponent } from './components/core/plugin-modal/plugin-moda
 import { JsonEditorModule } from './components/common/json-editor/json-editor.module';
 
 @NgModule({
-  imports: [CommonModule, PipesModule, FormsModule, DirectivesModule, SelectDropDownModule, JsonEditorModule],
+  imports: [CommonModule, PipesModule, FormsModule, DirectivesModule, JsonEditorModule, NgSelectModule, ReactiveFormsModule],
   declarations: [ViewConfigItemComponent, ConfigChildrenComponent, PluginModalComponent, ViewLogsComponent],
   exports: [ViewConfigItemComponent, ConfigChildrenComponent, PluginModalComponent, ViewLogsComponent]
 })
