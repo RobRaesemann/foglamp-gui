@@ -45,6 +45,9 @@ export class ViewConfigItemComponent implements OnInit, OnChanges, AfterViewChec
   public passwordOnChangeFired = false;
   public passwordMatched = true;
 
+  mEditorOptions = {theme: 'vs-dark', language: 'python'};
+  // code = 'function x() {\nconsole.log("Hello world!");\n}';
+
   constructor(private configService: ConfigurationService,
     private alertService: AlertService,
     public ngProgress: ProgressBarService,

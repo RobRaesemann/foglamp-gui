@@ -7671,6 +7671,13 @@ ng-sidebar@~8.0.0:
   resolved "https://registry.yarnpkg.com/ng-sidebar/-/ng-sidebar-8.0.0.tgz#c9d170aea9831116f807e557aa32f2eb063163bb"
   integrity sha512-+uCduUkcsOerb8MjecrPcP1KY8gKyd8XVBB+8jRao/JCz/qBwD9E2GPRGLL+NzwU72coYhL8L4UvhZwwIpl1rA==
 
+ngx-monaco-editor@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-monaco-editor/-/ngx-monaco-editor-7.0.0.tgz#3c422502def5c5ff0771a4ff518352d0215de698"
+  integrity sha512-vzPXTgeZEuRapuiANtrUjNCMdU5MmsJvQVyKgZS042VdXayAn6gPxvIVQp4ipUzX5JzVOfjkL2t+s9+ihMT5Eg==
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-select-dropdown@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ngx-select-dropdown/-/ngx-select-dropdown-1.0.1.tgz#cea6816eef31caac3597c10de62701120ff34e3d"

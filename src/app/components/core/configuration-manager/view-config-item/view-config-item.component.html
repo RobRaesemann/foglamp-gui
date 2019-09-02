@@ -79,6 +79,11 @@
                     </ng-container>
 
                     <div *ngIf="getConfigAttributeType(configItem.value.type) === 'SCRIPT'">
+                      <ngx-monaco-editor [options]="mEditorOptions"
+                      name="{{configItem.value.key}}"
+                      [ngModel]="fileContent || setConfigValue(configItem.value)">
+                    </ngx-monaco-editor>
+
                       <textarea #textarea rows="10" class="textarea is-fullwidth is-small"
                         name="{{configItem.value.key}}" [ngModel]="fileContent || setConfigValue(configItem.value)"
                         (click)="getFileName(configItem?.value?.file)"

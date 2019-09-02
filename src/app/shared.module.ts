@@ -14,10 +14,28 @@ import { PipesModule } from './pipes/pipes.module';
 import { ConfigChildrenComponent } from './components/core/configuration-manager/config-children/config-children.component';
 import { PluginModalComponent } from './components/core/plugin-modal/plugin-modal.component';
 import { JsonEditorModule } from './components/common/json-editor/json-editor.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
-  imports: [CommonModule, PipesModule, FormsModule, DirectivesModule, SelectDropDownModule, JsonEditorModule],
-  declarations: [ViewConfigItemComponent, ConfigChildrenComponent, PluginModalComponent, ViewLogsComponent],
-  exports: [ViewConfigItemComponent, ConfigChildrenComponent, PluginModalComponent, ViewLogsComponent]
+  imports: [
+    CommonModule,
+    PipesModule,
+    FormsModule,
+    DirectivesModule,
+    SelectDropDownModule,
+    JsonEditorModule,
+    MonacoEditorModule.forRoot()
+  ],
+  declarations: [
+    ViewConfigItemComponent,
+    ConfigChildrenComponent,
+    PluginModalComponent,
+    ViewLogsComponent],
+  exports: [
+    ViewConfigItemComponent,
+    ConfigChildrenComponent,
+    PluginModalComponent,
+    ViewLogsComponent
+  ]
 })
 export class SharedModule { }
